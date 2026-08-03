@@ -1,15 +1,51 @@
 ---
 title: What is DeepS
-description: A Crypto Random AI Verification Network
+description: A Verifiable Compute Network Built for the Autonomous AI Economy
 ---
 
-DeepS is a Crypto Random AI Verification Network that ensures trustless verification of on-chain and off-chain data, addressing the critical need for integrity in decentralized systems. It validates AI Agent inputs and outputs, bridging blockchain and AI. As these technologies converge, DeepS's role in providing tamper-proof verification is vital. Its vision is to become the standard for cross-chain, cross-system data verification, fostering a secure, scalable ecosystem.
+# DeepS: A Verifiable Compute Network Built for the Autonomous AI Economy
 
-DeepS leverages advanced cryptographic techniques, including Ring VRF, MPC, and TEE. Ring VRF generates random numbers to select verification nodes, ensuring unpredictable, secure processes. MPC uses threshold signatures and dynamic node rotation for robust, collaborative validation. TEE protects sensitive data with hardware-level isolation. Together, these technologies deliver decentralized, tamper-resistant verification.
+## A New Proposition: What Kind of Infrastructure Do AI Agents Need
 
-The Dynamic Hidden Committees (DHC) , a DeepS innovation, orchestrates verification by randomly selecting nodes via Ring VRF and using zero-knowledge proofs for privacy. Integrated with LLM-powered deep search, DHC enables rapid, intelligent data retrieval and validation, addressing issues like AI hallucinations and unreliable oracles.
+As large language models and AI agent technologies advance rapidly, a new trend is emerging: AI is no longer just a tool that passively responds to instructions, but is gradually evolving into an independent actor capable of autonomous decision-making, collaboration, and even economic transactions. When thousands of AI agents need to collaborate with one another, verify each other's computational results, and complete real-time settlement between machines, existing internet and blockchain infrastructure starts to fall short — traditional cloud computing relies heavily on centralized trust, while traditional blockchains struggle to support the high concurrency and low latency required by AI-native workloads.
 
-DeepS empowers applications like AI Agent validation, DeFi oracles, cross-chain interoperability, supply chain transparency, and privacy-preserving compliance. By ensuring reliable data across systems, DeepS aims to drive innovation and trust in decentralized ecosystems, inviting collaboration to shape a secure future.
+DeepS (deeps.fi) is a proposed solution aimed at exactly this gap. It defines itself as "a decentralized infrastructure network designed for the next generation of autonomous AI economies," with the goal of enabling AI agents, applications, and decentralized networks to operate securely, efficiently, and autonomously. Its core requirements center on five areas: autonomous coordination, verifiable computation, privacy-preserving execution, machine-native settlement, and internet-scale AI collaboration.
+
+## A Three-Tier Node Architecture
+
+DeepS's network is composed of three types of nodes, each with a distinct role:
+
+**Validator Nodes** are permissionless nodes that anyone can participate in. They are responsible for maintaining network consensus, verifying transactions and state transitions, and preserving ledger integrity — forming the decentralized coordination foundation of the entire network.
+
+**TEE Community Nodes** are likewise permissionless, open nodes that provide verifiable computation, trusted execution environments, and privacy-preserving AI execution capabilities. Anyone can contribute their own compute resources to join the network and take on the role of distributed AI service provision.
+
+**TEE Super Nodes** are admission-based, high-performance nodes designed specifically for large-scale model execution, enterprise-grade reliability requirements, and advanced privacy computation scenarios, providing institutional-grade AI infrastructure support.
+
+Together, these three node types form a decentralized AI compute marketplace — ordinary participants can contribute idle compute through Community Nodes, while enterprise-level users can rely on Super Nodes for more stable, higher-performance service.
+
+## The Cryptographic Trust Stack: MPC + ZK + TEE
+
+The most technically substantive part of DeepS's architecture is the combination of three cryptographic technologies it integrates:
+
+- **MPC (Multi-Party Computation)** allows distributed parties and AI agents to compute collaboratively without exposing their respective private data, supporting secure multi-agent coordination, distributed key management, and shared intelligence collaboration without exposing raw data.
+- **ZK (Zero-Knowledge Proofs)** enables AI systems to generate verifiable cryptographic proofs for their computation, execution, and coordination processes, allowing trustless verification of off-chain computation without needing to re-execute the entire computation.
+- **TEE (Trusted Execution Environment)** provides hardware-level isolation and privacy computation capabilities, ensuring that sensitive operations such as key generation, storage, and signing are carried out within a protected environment.
+
+Combined, these three form a hybrid trust architecture that seeks to balance performance, privacy, verifiability, scalability, and decentralization — supporting the large-scale, trustworthy, cross-institutional collaboration that an agent economy requires.
+
+## A Concrete Application: Dynamic Hidden Committee and Decentralized Asset Management
+
+One concrete application DeepS proposes is **decentralized asset management**. Built on its multi-layer signature network, cross-chain assets are no longer controlled by a single centralized custodian; instead, asset security, execution, and settlement are jointly enforced through cryptographic coordination, a Dynamic Hidden Committee (DHC), and verifiable execution environments.
+
+The DHC mechanism combines four technologies: Ring VRF (a verifiable random function based on ring signatures), zero-knowledge proofs, multi-party computation, and trusted execution environments, delivering several core capabilities: dynamic rotation of the verification node committee, hidden identities of verification nodes (to protect against targeted attacks), cryptographically fair selection mechanisms, hardware-level key management, and non-custodial distributed signing and cross-chain settlement verification.
+
+The resulting advantages include: committee members rotate dynamically across epochs, significantly raising the cost and difficulty of coordinated attacks; verification node identities remain hidden via Ring VRF, reducing the risk of denial-of-service attacks and external or internal coercion; committee selection is carried out through cryptographic randomness and a decentralized lottery mechanism, ensuring fair scheduling; and all key generation, storage, and signing operations are executed within TEE environments, paired with remote attestation verification.
+
+## Vision: Connecting Autonomous Intelligence in the Next Era of the Internet
+
+DeepS envisions a world in which: AI agents autonomously collaborate and transact; decentralized AI economies operate continuously; computation is verifiable by default; privacy and trust coexist at internet scale; and humans, AI agents, and autonomous systems all participate together in a unified economic network. As the project's own site puts it: the next era of the internet will not only connect people — it will connect autonomous intelligence itself.
+
+DeepS has currently launched a testnet, accompanied by a suite of tools including technical documentation, a block explorer, an application dashboard, and staking pages for both the DHC and validator nodes, all open to developers and community participants. As a project still in its early stages, its actual technical maturity, performance, and security remain to be evaluated through further independent testing and real-world operational data.
 
 ## Explore
 
