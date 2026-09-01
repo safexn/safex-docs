@@ -1,0 +1,114 @@
+---
+title: Committee Asset Fee Calculation
+description: How periodic asset-management fees are calculated for committee BTC and BRC-20 holdings.
+---
+
+# Committee Asset Fee Calculation
+
+The workflow calculates a periodic asset-management fee from a committee's BTC and BRC-20 holdings. It deducts the fee from the committee's remaining pledge and transfers it from the committee creator to the mining pallet account.
+
+## 1. Convert Assets to Credits
+
+BTC is converted to credits using the configured BTC exchange rate:
+
+$$
+C_{\mathrm{BTC}} = A_{\mathrm{BTC}} \times \frac{R_{\mathrm{BTC},1}}{R_{\mathrm{BTC},0}}
+$$
+
+Each BRC-20 asset is converted in the same way:
+
+$$
+C_i = A_i \times \frac{R_{i,1}}{R_{i,0}}
+$$
+
+The total credit value is:
+
+$$
+C_{\mathrm{total}} = C_{\mathrm{BTC}} + \sum_i C_i
+$$
+
+An asset is ignored when its exchange-rate denominator (`rate.0`) is zero.
+
+For asset amounts greater than $2^{68}$, the implementation shifts the amount right by 64 bits before multiplying and scales the result back afterward. This reduces fixed-point overflow risk but discards some low-order precision.
+
+## 2. Deduct Free Credits
+
+The configured free-credit allowance is deducted from the total:
+
+$$
+C_{\mathrm{billable}} = \max(C_{\mathrm{total}} - C_{\mathrm{free}}, 0)
+$$
+
+No fee is charged when the total credits do not exceed `free credits`.
+
+## 3. Calculate the Refresh-Interval Rate
+
+`AssetFeeRatePerYear` is stored as parts per billion:
+
+$$
+R_{\mathrm{annual}} = \frac{\text{AssetFeeRatePerYear.deconstruct()}}{10^9}
+$$
+
+The implementation assumes one block every three seconds:
+
+$$
+B_{\mathrm{day}} = \frac{3600 \times 24}{3} = 28{,}800
+$$
+
+It converts the annual rate to an epoch rate and then scales that rate to the asset refresh interval. Ignoring intermediate integer truncation, this is equivalent to:
+
+$$
+R_{\mathrm{interval}} = R_{\mathrm{annual}} \times \frac{B_{\mathrm{refresh}}}{365 \times B_{\mathrm{day}}}
+$$
+
+where $B_{\mathrm{refresh}}$ is `assets_refresh_interval()`.
+
+The actual implementation performs integer division while calculating `asset_fee_rate_per_epoch`, so its result can be slightly lower than the simplified formula.
+
+## 4. Convert Credits to the Native-Token Fee
+
+The configured charge rate is represented as:
+
+$$
+R_{\mathrm{native/USDT}} = \frac{\text{charge\_rate.0}}{\text{charge\_rate.1}}
+$$
+
+The calculated fee is:
+
+$$
+F = C_{\mathrm{billable}} \times R_{\mathrm{native/USDT}} \times R_{\mathrm{interval}}
+$$
+
+In code, the calculation is equivalent to:
+
+```rust
+fee = asset_fee_rate * native_usdt_rate * billable_credits
+```
+
+The implementation uses saturating `FixedU128` arithmetic for these multiplications.
+
+## 5. Cap the Fee by the Committee Pledge
+
+The amount actually collected cannot exceed the committee's remaining pledge:
+
+$$
+F_{\mathrm{real}} = \min(F, P_{\mathrm{committee}})
+$$
+
+`real_fee` is deducted from the committee pledge. The creator's currency lock is reduced by the same amount, and the tokens are transferred to the mining pallet account.
+
+## Conditions That Skip Charging
+
+The workflow returns without charging when:
+
+- the annual asset fee rate is zero;
+- the native-token/USDT charge rate is unavailable;
+- the committee has no remaining pledge;
+- the committee is stopped; or
+- the total asset credits do not exceed the free-credit allowance.
+
+When the committee is stopped, it is also removed from `CommitteesNeedUpdateAssets`.
+
+## Implementation Note
+
+When the calculated `fee` exceeds the remaining pledge, the transfer is capped at `real_fee`. However, each committee member's `IdentityAssetFeeRewards` value is increased by the uncapped `fee`. This difference should be reviewed to confirm whether rewards are intended to use `fee` or `real_fee`.
