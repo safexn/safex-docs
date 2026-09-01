@@ -3,6 +3,8 @@ title: Maintaining
 description: How to set up and maintain a DHC node service
 ---
 
+>> The document is operated under ubuntu24.04
+
 ### Create Wallet Account
 
 You can create a new wallet address directly within the browser plugin wallet like MetaMask and export the private key for later use.
@@ -63,10 +65,10 @@ Exposing the node's external IP is important to increase DHC's stability.
 
 ```bash
 # Create a node storage catalog
-mkdir -p bool-beta-testnode/node-data
+mkdir -p deeps-testnode/node-data
 
 # Enter the node storage catalog
-cd bool-beta-testnode
+cd deeps-testnode
 
 # Adjust user permissions
 chmod 777 node-data
@@ -76,7 +78,7 @@ cat > docker-compose.yaml <<EOF
 version: "3"
 services:
   node1:
-    image: safexn/sxn-node:pre-beta
+    image: safexn/deeps-node:pre-beta
     restart: always
     environment:
       RUST_LOG: info
@@ -93,7 +95,7 @@ services:
       --pool-kbytes 2048000
       --tx-ban-seconds 600
       --ethapi=debug,trace,txpool
-      --chain beta_testnet
+      --chain testbeta
       --public-addr <PUBLIC_ADDR>
     ports:
       - 9944:9944
@@ -119,16 +121,16 @@ Some of the built-in terminals will recognize space characters as indent charact
 cd ..
 
 # Pull github repositories
-git clone https://github.com/safexn/sxn-mining-scripts.git
+git clone https://github.com/deepslabs/deeps-mining-scripts.git
 
 # Install the sgx driver
-apt update
-apt install build-essential automake autoconf libtool wget python libssl-dev dkms
+sudo apt update
+sudo apt install build-essential automake autoconf libtool wget libssl-dev dkms
 wget https://download.01.org/intel-sgx/latest/linux-latest/distro/ubuntu18.04-server/sgx_linux_x64_driver_1.41.bin
-bash sgx_linux_x64_driver_1.41.bin
+bash sgx_linux_x64_sdk_2.30.101.1.bin
 
 # View sgx status
-cd def-mining-scripts && ./sgx-detect
+cd deeps-mining-scripts && ./sgx-detect
 ```
 
 ### Modify keyring.toml Configuration File
@@ -143,33 +145,10 @@ example: external_multiaddrs = ["/ip4/127.0.0.1/tcp/38700"]
 ```
 </Callout>
 
-```toml
-# Enter the configuration mode of keyring.toml file
-# vim configs/keyring.toml
+### Create keyring config
 
-node_ws_url = "ws://127.0.0.1:9944"
-# import your wallet public address starting with "0x" and do the replacement
-device_owner = "0x0000000000000000000000000000000000000000"
-# database path
-db_path = "/host/data"
-# tokio console port
-console_port = 5555
-# This corresponds to using an image, epid=1, dcap=2
-attestation_style = 2
-exe_policy = { Multiply = { executors = 8 } }
-
-# database start option
-[db_option]
-create_if_missing = true
-atomic_flush = true
-
-[network_config]
-port = 38700
-boot_nodes = ["/ip4/172.210.130.200/tcp/38701/p2p/12D3KooWQBrkBWb3tLoUpxqXebxg1Eab24LfcFP3hv37ZF2c6qgz","/ip4/20.81.161.179/tcp/38701/p2p/12D3KooWMDqap7HMjA6nos1HpHpWt8JBcPepnZgYSd5PPmovAqD7"]
-share_peer_interval = 30
-only_global_ips = true
-protocol_id = "betatestnet"
-# external_multiaddrs = ["/ip4/127.0.0.1/tcp/38700"]
+```shell
+hdc config testnet <owner address>
 ```
 
 ### Modify sgx\_default\_qcnl.conf File
@@ -220,7 +199,7 @@ You need to change the configuration here and replace the `<version_no>` only wh
 **Before changing version numbers, make sure your device is in Standby status, or not registered. Otherwise, you will be punished.**
 </Callout>
 
-The latest version of the image is: [**v0.12.19**](https://github.com/safexn/sxn-mining-scripts/blob/master/docker-compose.yml#L5)
+The latest version of the image is: [**pre1.2.0**](https://github.com/deeps/deeps-mining-scripts/blob/master/docker-compose.yml#L5)
 
 ```yaml
 # vim docker-compose.yaml
@@ -228,19 +207,9 @@ The latest version of the image is: [**v0.12.19**](https://github.com/safexn/sxn
 version: "3"
 services:
   occlum-keyring:
-    image: safenx/sxn-occlum-keyring:<version_no>
+    image: safenx/deeps-occlum-keyring:<version_no>
     restart: always
-    network_mode: "host"
-    environment:
-      RUST_LOG: info,p2p_net=debug
-    volumes:
-      - ./configs:/configs
-      - ./data:/root/occlum_instance/data
-      - ./configs/sgx_default_qcnl.conf:/etc/sgx_default_qcnl.conf
-    devices:
-      - /dev/sgx/enclave:/dev/sgx/enclave
-      - /dev/sgx/provision:/dev/sgx/provision
-    command: bash -c 'cp /configs/keyring.toml /root/occlum_instance; apt update;apt install curl -y;source /root/.bashrc; cd /root/occlum_instance; occlum print mrsigner; occlum print mrenclave; occlum run /bin/bnk-watcher run /host/keyring.toml'
+...............
 ```
 
 ### Start DHC Service
