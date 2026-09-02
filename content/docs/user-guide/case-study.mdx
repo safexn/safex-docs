@@ -76,13 +76,13 @@ If you are using Ubuntu 24.04, you might encounter the `libssl.so.1.1: cannot op
 When encountering this issue, it is likely because the image has not been pulled. To resolve this, execute the following to download the image:
 
 ```bash
-docker pull safexn/sxn-node:v0.11.9
+docker pull safexn/deeps-node:v1.2.3
 ```
 
 Subsequently, execute the following to modify the image name to correspond with the configuration file `docker-compose.yaml`:
 
 ```bash
-docker tag safexn/sxn-node:v0.11.9 safexn/sxn-node:v0.11.9
+docker tag safexn/deeps-node:v1.2.3 safexn/deeps-node:v1.2.3
 ```
 
 Then, run `docker-compose up -d` again and use `docker-compose logs -f --tail 200` to check the logs and ensure the application is running normally.

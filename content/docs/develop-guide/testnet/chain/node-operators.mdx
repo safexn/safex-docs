@@ -26,10 +26,10 @@ Compiling from binaries is temporarily unsupported since the network is not open
 
 ### Using Docker
 
-**Docker** is the only available way to operate nodes on DeepS chain at the alpha testnet stage. Developers can quickly run nodes through the images posted by DeepS team via the following command:
+**Docker** is the only available way to operate nodes on DeepS chain at the beta testnet stage. Developers can quickly run nodes through the images posted by DeepS team via the following command:
 
 ```shell
-docker run -p 30333:30333 boolnetwork/bnk-node:alpha-testnet --validator --chain=alpha_testnet --name <name on telemetry>
+docker run -p 30333:30333 safexn/deeps-node:pre-beta --validator --chain=betatest --name <name on telemetry>
 ```
 
 If you prefer to run in the background, please add `-d` to the docker command.
@@ -44,7 +44,7 @@ If you intend to run an RPC service that is externally accessible for applicatio
 More details can be found by executing the following command:
 
 ```shell
-docker run --rm boolnetwork/bnk-node:alpha-testnet --help
+docker run --rm safexn/deeps-node:pre-beta --help
 ```
 
 ## Examples
@@ -52,17 +52,20 @@ docker run --rm boolnetwork/bnk-node:alpha-testnet --help
 ### Node Initialization
 
 ```
-2024-01-30 08:08:26 BoolNetwork Node
-2024-01-30 08:08:26 ✌️  version 0.10.0-f53ea677650
-2024-01-30 08:08:26 ❤️  by BoolNetwork, 2022-2024
-2024-01-30 08:08:26 📋 Chain specification: BoolNetwork Alpha Testnet
-2024-01-30 08:08:26 🏷  Node name: grandiose-voyage-2878
-2024-01-30 08:08:26 👤 Role: AUTHORITY
-2024-01-30 08:08:26 💾 Database: RocksDb at /bool/.local/share/bnk-node/chains/boolnetwork_alpha_testnet/db/full
-2024-01-30 08:08:31 🔨 Initializing Genesis block/state (state: 0x5e9c…3f30, header-hash: 0x1808…0b78)
-2024-01-30 08:08:31 👴 Loading GRANDPA authority set from genesis on what appears to be first startup.
-2024-01-30 08:08:36 👶 Creating empty BABE epoch changes on what appears to be first startup.
-2024-01-30 08:08:36 🏷  Local node identity is: 12D3KooWFBrtXis73pD5aVbmyRNAGzCKaZ3q9VZFHgPmL3RNDEyH
+2026-08-18 16:10:11 DeepS Node    
+2026-08-18 16:10:11 ✌️  version 1.2.4-684cdc98cf4    
+2026-08-18 16:10:11 ❤️  by DeepSLabs, 2025-2026    
+2026-08-18 16:10:11 👤 Role: AUTHORITY    
+2026-08-18 16:10:11 💾 Database: RocksDb at ./base/alice/chains/local_testnet/db/full    
+2026-08-18 16:10:15 [0] 💸 generated 0 npos voters, 0 from validators and 0 nominators    
+2026-08-18 16:10:15 [0] 💸 generated 0 npos targets    
+2026-08-18 16:10:18 🔨 Initializing Genesis block/state (state: 0xecb8…79ef, header-hash: 0x42cd…9f90)    
+2026-08-18 16:10:18 Creating transaction pool txpool_type=ForkAware ready=Limit { count: 8192, total_bytes: 20971520 } future=Limit { count: 819, total_bytes: 2097152 }
+2026-08-18 16:10:18 👴 Loading GRANDPA authority set from genesis on what appears to be first startup.    
+2026-08-18 16:10:18 👶 Creating empty BABE epoch changes on what appears to be first startup.    
+2026-08-18 16:10:18 Using default protocol ID "sup" because none is configured in the chain specs    
+2026-08-18 16:10:18 Local node identity is: 12D3KooWQmARck7CiTJfMQUQBRSemDw9XVXHYcg9ToxqsGzioZWt    
+2026-08-18 16:10:18 Running litep2p network backend    
 ```
 
 ### Node Sync
